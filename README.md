@@ -1,5 +1,5 @@
-# console colors
-A C++ library for easily parsing command line flags
+# args-parser
+A C++ library for easily parsing command-line flags / arguments
 
 ## Usage
 ```c++
