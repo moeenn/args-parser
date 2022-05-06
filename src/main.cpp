@@ -1,28 +1,24 @@
 #include <iostream>
-#include "./libs/args-parser/ArgsParser.hpp"
+#include "./ArgsParser.hpp"
 
-uint32_t allocations = 0;
-
-/**
- *  track heap allocations
- */
-void *operator new(size_t size) {
-	allocations++;
-	std::cout << "[alloc] " << allocations << '\n';
-	return malloc(size);
+void print_help() {
+  std::cout << "usage: \n\n"
+            << "-name\tName of the user\n"
+            << "-year\tYear the user was born in\n"
+            << "-help\tPrint this help message\n\n";
 }
 
 int main(int argc, char *argv[]) {
   ArgsParser parser{argc, argv};
 
-  const char* x;
-  const char* year;
-  {
-    parser.flag("-x", "String argument X", &x);
-    parser.flag("--year", "String argument: Year", &year);
-    parser.parse();
+  auto name = parser.String("-name");
+  auto year = parser.Int("-year");
+  auto help = parser.Bool("-help");
+
+  if (help || !name || !year) {
+    print_help();
+    return 1;
   }
 
-  std::cout << "[x]\t" << x << '\n'
-            << "[year]\t" << year << '\n';
+  std::cout << *year << '\n' << *name << '\n';
 }
